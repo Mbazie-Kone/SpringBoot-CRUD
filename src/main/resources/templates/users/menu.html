@@ -19,7 +19,9 @@
     				<th>ID</th>
     				<th>Name</th>
     				<th>Surname</th>
-    				<th>Height</th>
+    				<th>Address</th>
+    				<th>Phone Number</th>
+    				<th>Email</th>
     				<th>Image</th>
     				<th>Actions</th>
     			</tr>
@@ -29,7 +31,9 @@
     				<td th:text="${user.id}"></td>
     				<td th:text="${user.name}"></td>
     				<td th:text="${user.surname}"></td>
-    				<td th:text="${user.height}"></td>
+    				<td th:text="${user.address}"></td>
+    				<td th:text="${user.phoneNumber}"></td>
+    				<td th:text="${user.email}"></td>
     				<td>
     					<img th:src="@{'/images/' + ${user.imageFileName}}" alt="..." width="100">
     				</td>
