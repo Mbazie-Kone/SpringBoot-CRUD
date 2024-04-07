@@ -83,7 +83,9 @@ public class UserController {
 		User user = new User();
 		user.setName(userDto.getName());
 		user.setSurname(userDto.getSurname());
-		user.setHeight(userDto.getHeight());
+		user.setAddress(userDto.getAddress());
+		user.setPhoneNumber(userDto.getPhoneNumber());
+		user.setEmail(userDto.getEmail());
 		user.setImageFileName(storageFileName);
 		
 		userRepo.save(user);
@@ -102,7 +104,9 @@ public class UserController {
 			UserDto userDto = new UserDto();
 			userDto.setName(user.getName());
 			userDto.setSurname(user.getSurname());
-			userDto.setHeight(user.getHeight());
+			userDto.setAddress(user.getAddress());
+			userDto.setPhoneNumber(user.getPhoneNumber());
+			userDto.setEmail(user.getEmail());
 			model.addAttribute("userDto", userDto);
 			
 		} catch (Exception ex) {
@@ -152,7 +156,9 @@ public class UserController {
 			
 			user.setName(userDto.getName());
 			user.setSurname(userDto.getSurname());
-			user.setHeight(userDto.getHeight());
+			user.setAddress(userDto.getAddress());
+			user.setPhoneNumber(userDto.getPhoneNumber());
+			user.setEmail(userDto.getEmail());
 			
 			userRepo.save(user);
 			
@@ -161,6 +167,5 @@ public class UserController {
 		}
 		
 		return "redirect:/users";
-	}
-	
+	}	
 }
