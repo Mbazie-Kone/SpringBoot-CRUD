@@ -6,7 +6,6 @@ import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -20,7 +19,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import it.alelegrand.spring.domain.User;
 import it.alelegrand.spring.domain.UserDto;
-import it.alelegrand.spring.repository.UserRepository;
+import it.alelegrand.spring.service.UserService;
 import jakarta.validation.Valid;
 
 @Controller
@@ -28,11 +27,11 @@ import jakarta.validation.Valid;
 public class UserController {
 	
 	@Autowired
-	private UserRepository userRepo;
+	private UserService userService;
 	
 	@GetMapping({"", "/"})
 	public String menu(Model model) {
-		List<User> users = (List<User>) userRepo.findAll(Sort.by(Sort.Direction.DESC, "id"));
+		List<User> users = userService.findAll();
 		model.addAttribute("users", users);
 		
 		return "users/menu";
@@ -88,7 +87,7 @@ public class UserController {
 		user.setEmail(userDto.getEmail());
 		user.setImageFileName(storageFileName);
 		
-		userRepo.save(user);
+		userService.add(user);
 		
 		return "redirect:/users";
 	}
@@ -98,7 +97,7 @@ public class UserController {
 		
 		try {
 			
-			User user = userRepo.findById(id).get();
+			User user = userService.findById(id);
 			model.addAttribute("user", user);
 			
 			UserDto userDto = new UserDto();
@@ -122,7 +121,7 @@ public class UserController {
 	public String updateUser(Model model, @RequestParam Long id, @Valid @ModelAttribute UserDto userDto, BindingResult result) {
 		
 		try {
-			User user = userRepo.findById(id).get();
+			User user = userService.findById(id);
 			model.addAttribute("user", user);
 			
 			if(result.hasErrors()) {
@@ -160,7 +159,7 @@ public class UserController {
 			user.setPhoneNumber(userDto.getPhoneNumber());
 			user.setEmail(userDto.getEmail());
 			
-			userRepo.save(user);
+			userService.add(user);
 			
 		} catch (Exception ex) {
 			System.out.println("Exception: " + ex.getMessage());
@@ -174,7 +173,7 @@ public class UserController {
 		
 		try {
 			
-			User user = userRepo.findById(id).get();
+			User user = userService.findById(id);
 			
 			// delete user image
 			Path imagePath = Paths.get("public/images/" + user.getImageFileName());
@@ -188,7 +187,7 @@ public class UserController {
 			}
 			
 			// delete the user
-			userRepo.delete(user);
+			userService.delete(user);
 			
 		} catch (Exception ex) {
 			System.out.println("Exception: " + ex.getMessage());
