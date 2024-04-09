@@ -20,7 +20,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import it.alelegrand.spring.domain.User;
 import it.alelegrand.spring.domain.UserDto;
-import it.alelegrand.spring.service.UserRepository;
+import it.alelegrand.spring.repository.UserRepository;
 import jakarta.validation.Valid;
 
 @Controller
@@ -167,5 +167,33 @@ public class UserController {
 		}
 		
 		return "redirect:/users";
-	}	
+	}
+	
+	@GetMapping("/delete")
+	public String deleteUser(@RequestParam Long id) {
+		
+		try {
+			
+			User user = userRepo.findById(id).get();
+			
+			// delete user image
+			Path imagePath = Paths.get("public/images/" + user.getImageFileName());
+			
+			try {
+				
+				Files.delete(imagePath);
+				
+			} catch (Exception ex) {
+				System.out.println("Exception: " + ex.getMessage());
+			}
+			
+			// delete the user
+			userRepo.delete(user);
+			
+		} catch (Exception ex) {
+			System.out.println("Exception: " + ex.getMessage());
+		}
+		
+		return "redirect:/users";
+	}
 }
